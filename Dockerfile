@@ -29,6 +29,9 @@ RUN go mod download
 COPY . ./
 RUN CGO_ENABLED=0 GOOS=linux go build -v -o tlkm-api ./http/main.go
 
+# Stage 2: Create the final minimal image
+FROM asia-southeast2-docker.pkg.dev/dogwood-wharf-316804/base-image/distroless-go
+
 # Copy release binary
 COPY --from=base-golang /app/tlkm-api /app/tlkm-api
 
