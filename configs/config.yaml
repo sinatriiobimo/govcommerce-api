@@ -6,8 +6,8 @@ app:
 
 postgre:
   telkom:
-    read: "postgres://root:cimanggis123@localhost:5432/postgres?sslmode=disable"
-    write: "postgres://root:cimanggis123@localhost:5432/postgres?sslmode=disable"
+    read: "postgresql://postgres:dc22e14-EedeEb1bCEdaBDFf1E45AgCD@viaduct.proxy.rlwy.net:50431/railway"
+    write: "postgresql://postgres:dc22e14-EedeEb1bCEdaBDFf1E45AgCD@viaduct.proxy.rlwy.net:50431/railway"
 
 timeout_http:
   read: 5
