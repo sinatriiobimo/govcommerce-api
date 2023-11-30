@@ -27,10 +27,7 @@ RUN git config --global url."https://${GITHUB_TOKEN}:x-oauth-basic@github.com/si
 # Compile the binary
 RUN go mod download
 COPY . ./
-RUN CGO_ENABLED=0 GOOS=linux go build -v -o tlkm-api ./http/*.go
-
-# Run the app inside distroless
-FROM asia-southeast2-docker.pkg.dev/dogwood-wharf-316804/base-image/distroless-go
+RUN CGO_ENABLED=0 GOOS=linux go build -v -o tlkm-api ./http/main.go
 
 # Copy release binary that already compiled into distroless
 COPY --from=base-golang /app/tlkm-api /app/tlkm-api
