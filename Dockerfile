@@ -17,16 +17,19 @@ RUN mkdir ~/.ssh \
 # Always set workdir into application root
 WORKDIR /app
 
-# Fetch dependencies
 # Copy the source code into container for compiling
-COPY go.mod go.sum ./
+COPY . /app
+
+# Cleanup previous binary if exists
+RUN rm -rf /app/main
 
 # Configure github auth
 RUN git config --global url."https://${GITHUB_TOKEN}:x-oauth-basic@github.com/sinatriiobimo".insteadOf "https://github.com/sinatriiobimo"
 
 # Compile the binary
-RUN go mod download
-COPY . ./
+RUN go get -v golang.org/x/tools/cmd/goimports
+RUN go mod download golang.org/x/net
+RUN go mod tidy
 RUN CGO_ENABLED=0 GOOS=linux go build -v -o tlkm-api ./http/main.go
 
 # Copy release binary that already compiled into distroless
