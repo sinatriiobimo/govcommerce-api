@@ -122,12 +122,12 @@ func Get() *Config {
 
 // set needed config which stored in os env
 func (cfg *Config) setConfigFromENV() (err error) {
-	if pgAstroReadConnstring := os.Getenv("PG_ASTRO_READ_CONNSTRING"); pgAstroReadConnstring != "" {
-		cfg.Postgre.Telkom.Read = pgAstroReadConnstring
+	if pgTelkomReadConnstring := os.Getenv("PG_TELKOM_READ_CONNSTRING"); pgTelkomReadConnstring != "" {
+		cfg.Postgre.Telkom.Read = pgTelkomReadConnstring
 	}
 
-	if pgAstroWriteConnstring := os.Getenv("PG_ASTRO_WRITE_CONNSTRING"); pgAstroWriteConnstring != "" {
-		cfg.Postgre.Telkom.Write = pgAstroWriteConnstring
+	if pgTelkomWriteConnstring := os.Getenv("PG_TELKOM_WRITE_CONNSTRING"); pgTelkomWriteConnstring != "" {
+		cfg.Postgre.Telkom.Write = pgTelkomWriteConnstring
 	}
 
 	return nil
