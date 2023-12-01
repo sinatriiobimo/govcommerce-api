@@ -101,7 +101,7 @@ func (s *Server) Run() error {
 		close(idleConnClosed)
 	}()
 
-	fmt.Printf("HTTP server running on port %s\n", configs.Get().App.HttpPort)
+	fmt.Printf("HTTP server running on port %s\n", os.Getenv("PORT"))
 
 	if err := s.Serve(); err != http.ErrServerClosed {
 		return err
@@ -113,8 +113,7 @@ func (s *Server) Run() error {
 }
 
 func (s *Server) Serve() error {
-
-	lis, err := net.Listen("tcp", ":"+configs.Get().App.HttpPort)
+	lis, err := net.Listen("tcp", ":"+os.Getenv("PORT"))
 	if err != nil {
 		return err
 	}
