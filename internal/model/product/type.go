@@ -40,8 +40,8 @@ type (
 	}
 
 	SearchProductResponse struct {
-		Data      []SearchProductData
-		TotalPage int
-		TotalData int
+		Data      []SearchProductData `json:"data"`
+		TotalPage int                 `json:"total_page"`
+		TotalData int                 `json:"total_data"`
 	}
 )

@@ -91,12 +91,7 @@ func (repo *ProductRepo) GetProductBySKU(ctx context.Context, sku string) (resul
 	return result, nil
 }
 
-func (repo *ProductRepo) GetProducts(ctx context.Context, param product.ParamSearch) ([]product.Product, error) {
-
-	return []product.Product{}, nil
-}
-
-func (repo *ProductRepo) GetProductsByParam(ctx context.Context, param product.ParamSearch) (products []product.SearchProductData, total int64, err error) {
+func (repo *ProductRepo) GetProductsByParam(ctx context.Context, param product.ParamSearch) (products []product.SearchProductData, err error) {
 	query := `
 		SELECT
 			p.sku, p.title, p.description, p.category, p.imgurl, p.weight, p.price,
@@ -121,6 +116,14 @@ func (repo *ProductRepo) GetProductsByParam(ctx context.Context, param product.P
 	}
 
 	query += " " + strings.Join(setClauses, "")
+	if len(setClauses) < 0 {
+		query = `
+		SELECT
+		p.sku, p.title, p.description, p.category, p.imgurl, p.weight, p.price,
+			COALESCE(AVG(pr.rating), 0) AS avg_rating
+		FROM products p
+		LEFT JOIN product_reviews pr ON p.sku = pr.product_sku`
+	}
 
 	switch strings.ToLower(param.SortBy) {
 	case "rating":
@@ -141,7 +144,7 @@ func (repo *ProductRepo) GetProductsByParam(ctx context.Context, param product.P
 
 	rows, err := repo.db.TelkomWrite.QueryContext(ctx, query)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -149,13 +152,12 @@ func (repo *ProductRepo) GetProductsByParam(ctx context.Context, param product.P
 		var p product.SearchProductData
 		err := rows.Scan(&p.SKU, &p.Title, &p.Description, &p.Category, &p.ImgURL, &p.Weight, &p.Price, &p.AvgRating)
 		if err != nil {
-			return nil, 0, err
+			return nil, err
 		}
 		products = append(products, p)
 	}
 
-	total = int64(len(products))
-	return products, total, nil
+	return products, nil
 }
 
 func (repo *ProductRepo) getRowsWithArguments(ctx context.Context, statementSelector string, args []interface{}) (rows *sql.Rows, err error) {

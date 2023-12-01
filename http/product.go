@@ -76,10 +76,10 @@ func (dc DeliveryProduct) CreateProduct(w http.ResponseWriter, r *http.Request) 
 	if err != nil {
 		resp.Error = pkg.ErrorAttribute{
 			Status:  false,
-			Message: "createProduct cannot input with similar SKU, SKU must unique",
-			Code:    http.StatusConflict,
+			Message: fmt.Sprintf("createProduct service got issue: %v", err),
+			Code:    http.StatusInternalServerError,
 		}
-		resp.Header.Status = http.StatusConflict
+		resp.Header.Status = http.StatusInternalServerError
 		resp.Header.ProcessTime = float64(time.Since(start)) / float64(time.Millisecond)
 		resp.Render(w, r)
 		return
@@ -192,9 +192,9 @@ func (dc DeliveryProduct) GetProductBySKU(w http.ResponseWriter, r *http.Request
 		resp.Error = pkg.ErrorAttribute{
 			Status:  true,
 			Message: fmt.Sprintf("SKU %v: record not found", req),
-			Code:    http.StatusNoContent,
+			Code:    http.StatusInternalServerError,
 		}
-		resp.Header.Status = http.StatusNoContent
+		resp.Header.Status = http.StatusInternalServerError
 		resp.Header.ProcessTime = float64(time.Since(start)) / float64(time.Millisecond)
 		resp.Render(w, r)
 		return
@@ -231,9 +231,9 @@ func (dc DeliveryProduct) GetProducts(w http.ResponseWriter, r *http.Request) {
 		lastCursor = ((param.PageIndex - 1) * param.PageSize) + lenData
 	}
 	resp.Pagination.TotalData = searchProductResp.TotalData
+	resp.Pagination.TotalPage = searchProductResp.TotalPage
 	resp.Pagination.LastCursor = lastCursor
 	resp.Pagination.Size = lenData
-	resp.Pagination.TotalPage = searchProductResp.TotalPage
 
 	if param.Direction != "" && param.SortBy != "" {
 		if param.Direction == "" || "desc" == strings.ToLower(param.Direction) || strings.ToLower(param.Direction) != "asc" {

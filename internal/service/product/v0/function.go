@@ -33,15 +33,14 @@ func (service *ServiceProduct) GetProductBySKU(ctx context.Context, sku string) 
 }
 
 func (service *ServiceProduct) GetProducts(ctx context.Context, param product.ParamSearch) (res product.SearchProductResponse, err error) {
-	var total int64
 	products := make([]product.SearchProductData, 0)
 
-	products, total, err = service.repo.ProductPostgre.GetProductsByParam(ctx, param)
+	products, err = service.repo.ProductPostgre.GetProductsByParam(ctx, param)
 	if err != nil {
 		return
 	}
-	res.TotalData = int(total)
-	res.TotalPage = service.getTotalPage(total, param.PageSize)
+	res.TotalData = len(products)
+	res.TotalPage = service.getTotalPage(int64(len(products)), param.PageSize)
 
 	res.Data = products
 	return
