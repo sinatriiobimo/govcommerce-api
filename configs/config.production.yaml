@@ -1,0 +1,14 @@
+app:
+  name: "tlkm-api"
+  httpPort: "8080"
+  shutdownTimeout: 10
+  logLevel: PROD
+
+postgre:
+  telkom:
+    read: "postgresql://postgres:dc22e14-EedeEb1bCEdaBDFf1E45AgCD@viaduct.proxy.rlwy.net:50431/railway"
+    write: "postgresql://postgres:dc22e14-EedeEb1bCEdaBDFf1E45AgCD@viaduct.proxy.rlwy.net:50431/railway"
+
+timeout_http:
+  read: 5
+  write: 15
