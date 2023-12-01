@@ -9,20 +9,12 @@ var (
 	config *Config
 )
 
-// Config should contain data/information from 3 sources:
-// Application config --> config/config.yaml
-// Infrastructure --> Env vars
-// 3rd party config --> google KMS
-
-// option defines configuration option
 type option struct {
 	configFolder string
 	configFile   string
 	configType   string
 }
 
-// Init initializes `config` from the default config file.
-// use `WithConfigFile` to specify the location of the config file
 func Init(opts ...Option) error {
 	opt := &option{
 		configFolder: getDefaultConfigFolder(),
@@ -60,17 +52,14 @@ func Init(opts ...Option) error {
 	return nil
 }
 
-// Option define an option for config package
 type Option func(*option)
 
-// WithConfigFolder set `config` to use the given config folder
 func WithConfigFolder(configFolder string) Option {
 	return func(opt *option) {
 		opt.configFolder = configFolder
 	}
 }
 
-// WithConfigFile set `config` to use the given config file
 func WithConfigFile(configFile string) Option {
 	return func(opt *option) {
 		env := os.Getenv("GO_ENV")
@@ -83,21 +72,18 @@ func WithConfigFile(configFile string) Option {
 	}
 }
 
-// WithConfigType set `config` to use the given config type
 func WithConfigType(configType string) Option {
 	return func(opt *option) {
 		opt.configType = configType
 	}
 }
 
-// getDefaultConfigFolder get default config folder.
 func getDefaultConfigFolder() string {
 	configPath := "./configs/"
 
 	return configPath
 }
 
-// getDefaultConfigFile get default config file.
 func getDefaultConfigFile() string {
 	env := os.Getenv("GO_ENV")
 	if env == "" {
@@ -107,12 +93,10 @@ func getDefaultConfigFile() string {
 	return "config." + env
 }
 
-// getDefaultConfigType get default config type.
 func getDefaultConfigType() string {
 	return "yaml"
 }
 
-// Get config
 func Get() *Config {
 	if config == nil {
 		config = &Config{}
@@ -120,7 +104,6 @@ func Get() *Config {
 	return config
 }
 
-// set needed config which stored in os env
 func (cfg *Config) setConfigFromENV() (err error) {
 	if pgTelkomReadConnstring := os.Getenv("PG_TELKOM_READ_CONNSTRING"); pgTelkomReadConnstring != "" {
 		cfg.Postgre.Telkom.Read = pgTelkomReadConnstring

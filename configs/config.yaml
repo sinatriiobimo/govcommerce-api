@@ -1,6 +1,6 @@
 app:
   name: "tlkm-api"
-  httpPort: ""
+  httpPort: "8080"
   shutdownTimeout: 10
   logLevel: PROD
 
