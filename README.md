@@ -10,6 +10,7 @@
 - Clone project
 - Run Command ``docker-compose up``
 - *this repo still have a configuration deployment problem. Will fix ASAP
+- During resolve deployment issue. After running ``docker-compose up``. It possible to using ``localhost:8080``as local host & port
 ---
 **Scope**
 =
