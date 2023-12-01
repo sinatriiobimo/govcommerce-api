@@ -9,8 +9,8 @@
 =
 - Clone project
 - Run Command ``docker-compose up``
-- *this repo still have a configuration deployment problem. Will fix ASAP
-- During resolve deployment issue. After running ``docker-compose up``. It possible to using ``localhost:8080``as local host & port
+- After running ``docker-compose up``. It possible to using ``localhost:8080``as local host & port
+- If you want to access using public server, it can use this prefix host ``https://govcommerce-api-production.up.railway.app/...``
 ---
 **Scope**
 =
